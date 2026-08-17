@@ -26,7 +26,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
  
-REQUEST_CHANNEL_ID = 1538963159514218526
+REQUEST_CHANNEL_ID = 1274373211609501836
  
  
 def parse_hex(hex_code: str) -> discord.Color | None:
