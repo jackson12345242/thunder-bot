@@ -25,7 +25,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands
  
-REQUEST_CHANNEL_ID = 1274373211609501836
+REQUEST_CHANNEL_ID = 1538963159514218526
+ALLOWED_ROLE_ID = 980812623299899392
 TOKEN = os.environ["DISCORD_TOKEN"]
 # Optional: set this on Railway while testing so slash commands sync instantly
 # to one server instead of waiting up to an hour for a global sync.
@@ -141,7 +142,18 @@ class RoleGiveView(discord.ui.View):
         self.add_item(RoleGiveSelect(guild))
  
  
-role_group = app_commands.Group(name="role", description="Role management commands")
+class RoleGroup(app_commands.Group):
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
+        member = interaction.user
+        if not isinstance(member, discord.Member) or not any(role.id == ALLOWED_ROLE_ID for role in member.roles):
+            await interaction.response.send_message(
+                "You don't have permission to use this command.", ephemeral=True
+            )
+            return False
+        return True
+ 
+ 
+role_group = RoleGroup(name="role", description="Role management commands")
  
  
 @role_group.command(name="create", description="Request a new role to be created")
