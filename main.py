@@ -1,23 +1,22 @@
-""
-main.py
- 
-Single-file Discord bot (no cogs) with:
- 
-  /role create name:<str> hex_code:<str>
-    - Posts an approval embed (with Accept/Deny buttons) into REQUEST_CHANNEL_ID.
-    - Accept -> creates the role with the given color, DMs the requester it was made.
-    - Deny   -> DMs the requester it was denied.
- 
-  /role give
-    - Posts an embed with a dropdown of every assignable role in the server.
-    - Selecting a role toggles it on/off for whoever clicked.
- 
-Setup:
-  1. Just run this one file - no cogs/ folder needed.
-  2. Make sure the bot's top role sits above any role it will be asked to create,
-     and that it has the "Manage Roles" permission.
-  3. Set the DISCORD_TOKEN env var (and optionally GUILD_ID for instant command sync).
-"""
+
+# main.py
+#
+# Single-file Discord bot (no cogs) with:
+#
+#   /role create name:<str> hex_code:<str>
+#     - Posts an approval embed (with Accept/Deny buttons) into REQUEST_CHANNEL_ID.
+#     - Accept -> creates the role with the given color, DMs the requester it was made.
+#     - Deny   -> DMs the requester it was denied.
+#
+#   /role give
+#     - Posts an embed with a dropdown of every assignable role in the server.
+#     - Selecting a role toggles it on/off for whoever clicked.
+#
+# Setup:
+#   1. Just run this one file - no cogs folder needed.
+#   2. Make sure the bots top role sits above any role it will be asked to create,
+#      and that it has the "Manage Roles" permission.
+#   3. Set the DISCORD_TOKEN env var (and optionally GUILD_ID for instant command sync).
  
 import os
 import re
@@ -39,7 +38,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
  
  
 def parse_hex(hex_code: str) -> discord.Color | None:
-    """Turns '#5865F2' or '5865F2' into a discord.Color, or None if invalid."""
+    # Turns "#5865F2" or "5865F2" into a discord.Color, or None if invalid.
     cleaned = hex_code.strip().lstrip("#")
     if not re.fullmatch(r"[0-9a-fA-F]{6}", cleaned):
         return None
@@ -47,13 +46,12 @@ def parse_hex(hex_code: str) -> discord.Color | None:
  
  
 class RoleRequestView(discord.ui.View):
-    """Persistent view: Accept/Deny buttons on a role-request embed.
- 
-    No per-instance state is stored here on purpose - everything the buttons
-    need (role name, hex code, requester id) is read back out of the embed
-    at click time. That's what lets discord.py re-attach this view to old
-    messages after a restart via bot.add_view(RoleRequestView()).
-    """
+    # Persistent view: Accept/Deny buttons on a role-request embed.
+    #
+    # No per-instance state is stored here on purpose - everything the buttons
+    # need (role name, hex code, requester id) is read back out of the embed
+    # at click time. That is what lets discord.py re-attach this view to old
+    # messages after a restart via bot.add_view(RoleRequestView()).
  
     def __init__(self):
         super().__init__(timeout=None)
