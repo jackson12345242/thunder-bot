@@ -35,7 +35,7 @@ from discord import app_commands
 from discord.ext import commands
  
 REQUEST_CHANNEL_ID = 1538963159514218526
-ALLOWED_ROLE_IDS = {980812623299899392, 1020661717883175002}
+ALLOWED_ROLE_IDS = {980812623299899392, 1020661717883175002, 980812099448102953}
 ROLE_CREATORS_FILE = "role_creators.json"
 TOKEN = os.environ["DISCORD_TOKEN"]
 # Optional: set this on Railway while testing so slash commands sync instantly
